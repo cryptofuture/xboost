@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en" class="theme-loading">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Xboost</title>
+    <script src="chrome-compat.js"></script><script src="theme.js"></script>
+    <link rel="stylesheet" href="ui.css">
+    <script defer src="shared.js"></script>
+    <script defer src="popup.js"></script>
+  </head>
+  <body class="popup-body">
+    <main class="popup">
+      <header class="popup-header">
+        <div class="brand-mini">
+          <img src="icons/icon48.png" width="38" height="38" alt="">
+          <div><strong>Xboost</strong></div>
+        </div>
+        <label class="compact-toggle" title="Enable Xboost">
+          <input type="checkbox" id="enabled" disabled>
+          <span class="switch" aria-hidden="true"></span>
+        </label>
+      </header>
+
+      <div class="field profile-picker">
+        <label for="active-profile">Active profile</label>
+        <select id="active-profile" disabled></select>
+        <small>Switch instantly across all open X tabs.</small>
+      </div>
+
+
+      <dl class="summary">
+        <div><dt>Status</dt><dd id="state">Loading…</dd></div>
+        <div><dt>Keywords</dt><dd id="keyword-count">—</dd></div>
+        <div><dt>Highlight</dt><dd id="threshold">—</dd></div>
+      </dl>
+
+      <div class="field">
+        <label for="search-mode">Find conversations</label>
+        <select id="search-mode">
+          <option value="conversations">Product conversations</option>
+          <option value="help">People asking for help</option>
+        </select>
+        <button type="button" class="button primary" id="find-conversations" disabled>Search X</button>
+        <small>Uses this profile’s keywords. Opens a new tab.</small>
+      </div>
+      <p class="status" id="scan-summary" role="status"></p>
+
+      <div class="warning" id="keyword-warning" hidden>
+        <strong>Relevance is skipped</strong>
+        <span>Add interests to include keyword relevance in scores.</span>
+        <button type="button" id="add-keywords">Add keywords</button>
+      </div>
+
+      <div class="popup-actions">
+        <button type="button" class="button" id="profile-editor">Profile editor</button>
+        <button type="button" class="button" id="engagement-review">Follow-back on X</button>
+        <button type="button" class="button" id="ai-replies">AI replies</button>
+        <button type="button" class="button" id="rescan">Rescan page</button>
+        <button type="button" class="button primary" id="settings">Settings</button>
+        <button type="button" class="button about-button" id="about" hidden>About Xboost</button>
+      </div>
+      <p class="status popup-status" id="status" role="status"></p>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en" class="theme-loading">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Xboost · AI replies</title>
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="ui.css">
+  <script defer src="queue-pagination.js"></script>
+  <script defer src="confirm-dialog.js"></script>
+  <script defer src="ai.js"></script>
+  <script defer src="discovery-ui.js"></script>
+</head>
+<body>
+  <main class="page">
+    <h1>AI replies</h1>
+    <p>Drafting model: GPT-5.6 Luna · Low reasoning · No automatic model fallback.</p>
+    <p>Prepare replies with your product context through Codex on your local network.</p>
+    <p>Enabling AI sends qualifying post text, author handles, post URLs and product context to your configured Codex server and OpenAI. <a href="privacy.html" target="_blank">Privacy policy</a>.</p>
+    <p>Configure your connection in <a href="options.html" target="_blank">Settings</a>. Enable AI to start drafting immediately from highlighted posts in open X tabs. Keep this panel open while drafting.</p>
+    <section class="card">
+      <label class="check"><input type="checkbox" id="automode" disabled><span><strong>Auto-draft replies</strong><small>Collect highlighted posts from the active profile in open X tabs. Own-account posts are excluded. No original posts are generated.</small></span></label>
+      <p>Drafts keep their intended account even when you switch profiles. Review and post from that account yourself. Automatic posting, likes and follows are not enabled.</p>
+      <p class="status" id="server-status" role="status"></p>
+      <p class="status" id="limits"></p>
+    </section>
+    <p class="status" id="error" role="alert"></p>
+    <section class="card" aria-label="Profile discovery">
+      <h2>Discover 100 drafts for one profile</h2>
+      <p>Choose the profile whose X account you will use, then work toward 100 ready drafts for it. You open each search and browse X; Xboost scores loaded posts and drafts eligible ones. Starting enables AI and uses Codex capacity. Nothing is published automatically.</p>
+      <div class="form-grid">
+        <div class="field"><label for="session-profile">Discovery profile</label><select id="session-profile"></select></div>
+        <div class="field"><label for="session-target">Ready-draft target</label><input id="session-target" type="number" min="1" step="1" value="100"></div>
+        <div class="field"><label for="session-age">Maximum post age (hours)</label><input id="session-age" type="number" min="1" step="1" value="24"></div>
+        <div class="field"><label for="session-backlog">Pending draft backlog</label><input id="session-backlog" type="number" min="1" step="1" value="20"></div>
+        <div class="field"><label for="session-authors">Candidates per author/session</label><input id="session-authors" type="number" min="1" step="1" value="3"></div>
+      </div>
+      <p>Targets top up compatible, fresh ready drafts. Stricter profile age filters still apply. Replies without verified parent context are excluded. Existing drafts without source timestamps or profile revisions stay available but cannot count toward this target.</p>
+      <div class="actions">
+        <button class="button primary" id="session-start">Start profile discovery</button>
+        <button class="button primary" id="session-next" disabled>Open next deep search</button>
+        <button class="button" id="session-simple-search" disabled>Current search failed: open simple fallback</button>
+        <button class="button" id="session-pause" disabled>Pause</button>
+        <button class="button" id="session-resume" disabled>Resume</button>
+        <button class="button" id="session-stop" disabled>Stop</button>
+        <button class="button danger" id="session-restart" disabled>Force stop and start over</button>
+        <button class="button" id="session-x-blocked" disabled>X shows a limit / challenge</button>
+      </div>
+      <p id="session-summary" role="status"></p>
+      <p id="session-error" role="alert"></p>
+      <p><strong>For faster coverage:</strong> each search combines up to three adjacent profile terms with OR. Xboost reuses one owned X tab, alternates focused Latest and Top slices, and excludes replies because they cannot be drafted safely without visible parent context. If X displays "Something went wrong", use the simple fallback button to reopen one term without operators.</p>
+      <p>If X shows a limit or challenge, report it above to pause with a cooldown. Honor any longer wait shown by X. This cooldown is a local precaution, not a claim about X's allowed request rate.</p>
+      <details><summary>Profile progress</summary><div id="session-progress"></div></details>
+    </section>
+    <section class="card">
+      <h2>Find more conversations</h2>
+      <p>Refresh for newer posts or load more results. Only new, qualifying posts get drafts while AI is enabled; previously processed posts are not drafted again.</p>
+      <div class="field"><label for="discovery-tab">X search or Home tab</label><select id="discovery-tab"></select></div>
+      <div class="actions">
+        <button class="button" id="new-search">New profile search</button>
+        <button class="button" id="refresh-posts">Refresh page</button>
+        <button class="button" id="more-posts">Load more posts</button>
+      </div>
+      <p id="discovery-status" role="status">Sending replies remains manual.</p>
+    </section>
+    <nav class="queue-controls" id="queue-controls" aria-label="Draft pages">
+      <label for="draft-profile-filter">Draft profile</label>
+      <select id="draft-profile-filter"><option value="*">All profiles</option></select>
+      <div class="queue-page-actions">
+        <button class="button" id="page-first">First page</button>
+        <button class="button" id="page-previous">Previous 25</button>
+        <button class="button" id="page-next">Next 25</button>
+        <button class="button" id="page-last">Last page</button>
+      </div>
+      <div class="queue-scroll-actions">
+        <label for="page-number">Page</label>
+        <input id="page-number" type="number" min="1" value="1">
+        <button class="button" id="page-go">Go</button>
+        <button class="button" id="drafts-top">Top of page</button>
+        <button class="button" id="drafts-bottom">Bottom of page</button>
+        <button class="button accent" id="queue-new" hidden>Show new drafts</button>
+      </div>
+      <span id="page-status" role="status"></span>
+    </nav>
+    <section id="drafts" aria-label="Reply drafts"></section>
+  </main>
+</body>
+</html>

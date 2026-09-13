@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en" class="theme-loading">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Xboost profile editor</title><script src="theme.js"></script><link rel="stylesheet" href="ui.css"><script defer src="shared.js"></script><script defer src="reply-context.js"></script><script defer src="confirm-dialog.js"></script><script defer src="profiles.js"></script></head>
+<body><main class="page">
+<div class="profile-editor-heading"><h1>Profile editor</h1><button class="button" type="button" id="back-welcome">Back to Welcome</button></div>
+<p>Create, edit or delete product profiles. Saving updates scoring in open X pages. Editing a profile does not switch your active profile or signed-in X account.</p>
+<div id="profile-selector"><div class="field"><label for="profile-picker">Profile to edit</label><select id="profile-picker"></select></div><div class="actions"><button class="button primary" type="button" id="new-profile">Create new profile</button><button class="button" type="button" id="copy-profile">Copy this profile</button><button class="button" type="button" id="delete-profile">Delete this profile</button></div></div>
+<form id="profile-form">
+<section class="card">
+<h2>Identity and AI context</h2>
+<div class="field"><label for="profile-name">Display name</label><input id="profile-name" required></div>
+<div class="field"><label for="profile-blurb">Description</label><input id="profile-blurb"></div>
+<div class="field"><label for="profile-handle">X profile URL or @name</label><input id="profile-handle" required placeholder="https://x.com/example or @example"></div>
+<div class="field"><label for="profile-context">Authoritative AI context</label><textarea id="profile-context" rows="16" required></textarea></div>
+<p>Custom context stays in Firefox and is sent to Codex/OpenAI when drafting. Do not include secrets or content you are not authorized to share. Existing queued drafts retain their original account/context. This does not edit the packaged Markdown files.</p>
+<button type="button" class="button" id="bundled-context">Load original bundled context into form</button>
+</section>
+<section class="card"><h2>Targeting, scoring and appearance</h2><div id="targeting-fields"></div></section>
+<div class="actions sticky-actions"><button class="button primary" type="submit">Save profile</button><button class="button" type="button" id="reload-profile">Discard edits & reload</button><span id="profile-status" role="status"></span></div>
+</form>
+<section class="card" id="create-wizard" hidden>
+<h2>Create profile <span id="wizard-progress"></span></h2>
+<div id="wizard-step-1"><h3>1. Product and account</h3><div class="field"><label for="new-name">Product/profile name</label><input id="new-name" required></div><div class="field"><label for="new-blurb">Short description</label><input id="new-blurb"></div><div class="field"><label for="new-handle">X profile URL or @name</label><input id="new-handle" placeholder="https://x.com/example or @example" required></div></div>
+<div id="wizard-step-2" hidden><h3>2. Authoritative AI context</h3><p>The Solana Index text below is a structure example only. Replace it with facts for your own product. Xboost rejects an unchanged example.</p><div class="field"><label for="new-context">Authoritative AI context</label><textarea id="new-context" rows="16" required></textarea></div><div class="field"><label for="context-prompt">Example prompt for an AI assistant</label><textarea id="context-prompt" rows="12" readonly></textarea></div><button class="button" type="button" id="copy-context-prompt">Copy AI prompt</button></div>
+<div id="wizard-step-3" hidden><h3>3. Discovery targeting</h3><div class="field"><label for="new-keywords">Keywords and phrases, one per line</label><textarea id="new-keywords" rows="10" placeholder="specific product category&#10;customer problem&#10;technical topic"></textarea></div><p>Discovery combines adjacent terms in groups of up to three, so place closely related terms next to each other.</p></div>
+<div class="actions wizard-actions"><button class="button" type="button" id="wizard-back">Back</button><button class="button primary" type="button" id="wizard-next">Next</button><button class="button primary" type="button" id="wizard-create" hidden>Create profile</button><button class="button" type="button" id="wizard-cancel">Cancel</button><span id="wizard-status" role="status"></span></div>
+</section>
+</main></body></html>

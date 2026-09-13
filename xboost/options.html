@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en" class="theme-loading">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Xboost settings</title>
+    <script src="theme.js"></script>
+    <link rel="stylesheet" href="ui.css">
+    <script defer src="shared.js"></script>
+    <script defer src="options.js"></script>
+    <script defer src="codex-settings.js"></script>
+  </head>
+  <body>
+    <main class="page">
+      <header class="brand-header">
+        <img src="icons/icon96.png" width="64" height="64" alt="">
+        <div>
+          <h1>Xboost</h1>
+        </div>
+      </header>
+
+      <section class="card hero-card">
+        <label class="toggle-row">
+          <input type="checkbox" id="enabled">
+          <span class="toggle-copy">
+            <strong>Enable Xboost</strong>
+            <small id="enabled-hint"></small>
+          </span>
+          <span class="switch" aria-hidden="true"></span>
+        </label>
+      </section>
+
+      <section class="card">
+        <label class="toggle-row">
+          <input type="checkbox" id="dark-theme">
+          <span class="toggle-copy">
+            <strong>Dark theme</strong>
+            <small>Ocean Signal. Turn off to use Arctic Daylight, the default light theme.</small>
+          </span>
+          <span class="switch" aria-hidden="true"></span>
+        </label>
+        <p class="status theme-status" id="theme-status" role="status"></p>
+      </section>
+
+      <section class="card">
+        <div class="section-heading">
+          <div>
+            <h2>Your products &amp; founder account</h2>
+          </div>
+          <p>Switch instantly across all X tabs. Each profile keeps its own settings. Switching saves your current edits.</p>
+        </div>
+        <div class="profiles" id="profiles"></div>
+      </section>
+
+      <section class="card" id="interests">
+        <div class="section-heading">
+          <div>
+            <h2>Your interests</h2>
+          </div>
+          <p>No keywords? Relevance is skipped and the other signals are rebalanced.</p>
+        </div>
+        <div class="field">
+          <label for="keywords">Keywords and phrases</label>
+          <textarea id="keywords" rows="7" spellcheck="false" placeholder="open source&#10;typescript&#10;shipping"></textarea>
+          <small>One per line or comma-separated. One distinct match gives 55% relevance, two give 85%, three or more give 100%. Overlapping terms count once. Adding terms never dilutes matches.</small>
+        </div>
+        <div class="field">
+          <label for="blacklist">Ignored handles</label>
+          <textarea id="blacklist" rows="4" spellcheck="false" placeholder="@noisyaccount&#10;brandbot"></textarea>
+          <small>One per line, with or without <code>@</code>.</small>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-heading">
+          <div>
+            <h2>Score and filters</h2>
+          </div>
+          <p>Numeric filters have no arbitrary upper limit. Enter 0 to disable a cutoff.</p>
+        </div>
+        <div class="grid">
+          <div class="field">
+            <label for="maxAgeMinutes">Maximum age, minutes</label>
+            <input type="number" id="maxAgeMinutes" min="0" step="1">
+            <small>0 disables the age cutoff.</small>
+          </div>
+          <div class="field">
+            <label for="minViews">Minimum views</label>
+            <input type="number" id="minViews" min="0" step="1">
+            <small>Unknown view counts are never rejected.</small>
+          </div>
+          <div class="field">
+            <label for="maxReplies">Maximum replies</label>
+            <input type="number" id="maxReplies" min="0" step="1">
+            <small>0 uses a smooth headroom curve with no cutoff.</small>
+          </div>
+          <div class="field">
+            <label for="threshold">Highlight threshold</label>
+            <input type="number" id="threshold" min="0" step="1">
+            <small>Scores normally run from 0 to 100.</small>
+          </div>
+          <div class="field">
+            <label for="targetViewsPerReply">Ideal views per reply</label>
+            <input type="number" id="targetViewsPerReply" min="1" step="1">
+            <small>At this ratio, view efficiency is maximal.</small>
+          </div>
+          <div class="field">
+            <label for="dimOpacity">Dimmed opacity, percent</label>
+            <input type="number" id="dimOpacity" min="0" max="100" step="1">
+            <small>0 hides visually; 100 leaves posts fully opaque.</small>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-heading">
+          <div>
+            <h2>Signal weights</h2>
+          </div>
+          <p>Any non-negative values work; they are normalized automatically.</p>
+        </div>
+        <div class="grid grid-three">
+          <div class="field">
+            <label for="freshnessWeight">Freshness</label>
+            <input type="number" id="freshnessWeight" min="0" step="1">
+          </div>
+          <div class="field">
+            <label for="headroomWeight">Reply headroom</label>
+            <input type="number" id="headroomWeight" min="0" step="1">
+          </div>
+          <div class="field">
+            <label for="relevanceWeight">Keyword relevance</label>
+            <input type="number" id="relevanceWeight" min="0" step="1">
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-heading">
+          <div>
+            <h2>What to filter</h2>
+          </div>
+        </div>
+        <div class="check-grid">
+          <label class="check"><input type="checkbox" id="dimNonMatches"><span><strong>Dim other posts</strong><small>Off by default: only promising posts are highlighted; everything else stays readable.</small></span></label>
+          <label class="check"><input type="checkbox" id="intentBoost"><span><strong>Prioritize requests for help</strong><small>Add up to 10 score points for relevant posts with a question or help/recommendation wording.</small></span></label>
+          <label class="check"><input type="checkbox" id="requireKeywordMatch"><span><strong>Require a keyword match</strong><small>Only highlight posts relevant to this profile. Skipped if no keywords are configured.</small></span></label>
+          <label class="check"><input type="checkbox" id="excludeReplies"><span><strong>Replies</strong><small>Skip posts already replying to someone.</small></span></label>
+          <label class="check"><input type="checkbox" id="excludePromoted"><span><strong>Promoted posts</strong><small>Skip ads recognized in the timeline.</small></span></label>
+          <label class="check"><input type="checkbox" id="excludeEngagementBait"><span><strong>Engagement bait</strong><small>Skip common follow, repost and giveaway prompts.</small></span></label>
+          <label class="check"><input type="checkbox" id="showBadges"><span><strong>Score badges</strong><small>Show the score and hover explanation on hits.</small></span></label>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>About button</h2>
+        <p>Show or hide the yellow About Xboost button in the popup. You can restore it at any time.</p>
+        <div class="actions"><button type="button" class="button about-button" id="about-visibility">Hide About Xboost button</button><span class="status" id="about-visibility-status" role="status"></span></div>
+      </section>
+
+      <dialog class="support-dialog" id="support-dialog" aria-labelledby="support-dialog-title">
+        <div class="support-dialog-content">
+          <h2 id="support-dialog-title">Have you supported the author?</h2>
+          <p>The About button provides links to follow the author, like useful posts, or try the projects. Confirm below before hiding it.</p>
+          <label class="check support-confirmation">
+            <input type="checkbox" id="support-confirmation">
+            <span><strong>Yes, I have supported the author</strong><small>This confirmation is stored only as the hidden-button preference.</small></span>
+          </label>
+          <div class="actions dialog-actions">
+            <button type="button" class="button primary" id="confirm-hide-about" disabled>Hide About button</button>
+            <button type="button" class="button" id="cancel-hide-about">Cancel</button>
+          </div>
+        </div>
+      </dialog>
+
+    <section class="card">
+      <h2>Connect Codex App Server</h2>
+      <p>Reply model: GPT-5.6 Luna with low reasoning effort. Model errors pause drafting; Xboost never switches to a more expensive model automatically.</p>
+      <p>Post text and the selected product context are sent to your server and OpenAI when auto-drafting is enabled.</p>
+      <div class="setup-guide">
+        <h3>Quick setup</h3>
+        <p>Run these commands in the folder where you want to keep the token. OpenSSL must be installed and available in your terminal.</p>
+        <h4>Linux or macOS</h4>
+        <pre class="command"><code>openssl rand -hex 32 &gt; ./xboost-token
+codex app-server --listen ws://0.0.0.0:4500 \
+  --ws-auth capability-token \
+  --ws-token-file ./xboost-token</code></pre>
+        <h4>Windows PowerShell</h4>
+        <pre class="command"><code>openssl rand -hex 32 | Set-Content -NoNewline .\xboost-token
+codex app-server --listen ws://0.0.0.0:4500 --ws-auth capability-token --ws-token-file .\xboost-token</code></pre>
+        <p>Keep that terminal running. Below, use <code>ws://127.0.0.1:4500</code> on the same computer, or <code>ws://YOUR-LAN-IP:4500</code> from another device. Paste the token file's contents into the capability token field.</p>
+      </div>
+      <div class="field"><label for="server-url">WebSocket address</label><input type="url" id="server-url" placeholder="ws://127.0.0.1:4500 or wss://your-server"></div>
+      <div class="field"><label for="server-token">Capability token</label><input type="password" id="server-token" autocomplete="off" placeholder="Paste contents of xboost-token"></div>
+      <p>Plain ws:// exposes your capability token and messages to network observers. Prefer ws://127.0.0.1 with SSH forwarding, or wss:// through a TLS proxy for remote servers. Never paste a token into a public support message.</p>
+      <div class="actions"><button class="button" id="connect">Save &amp; connect</button><button class="button" id="login">Sign in with ChatGPT</button></div>
+      <p id="login-code" role="status"></p>
+    </section>
+      <p id="codex-status" role="status"></p>
+      <div class="actions sticky-actions">
+        <button type="button" class="button primary" id="save">Save settings</button>
+        <button type="button" class="button" id="reset">Reset form</button>
+        <span class="status" id="save-status" role="status"></span>
+      </div>
+
+      <footer>
+        Scoring stays local. Optional AI sends post text, author handles, post URLs and product context to your Codex server and OpenAI. Assisted replies fill X's composer only at your request; sending remains manual. <a href="privacy.html" target="_blank">Privacy policy</a>.
+      </footer>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+NAME
+Xboost
+
+SUGGESTED SLUG
+xboost
+
+SUMMARY
+Find relevant X conversations with local scoring and optional Codex AI reply drafts.
+
+DESCRIPTION
+Xboost helps you find conversations worth joining on X. It scores posts already rendered in your browser using keywords, freshness and conversation activity, and highlights relevant posts without hiding the rest by default.
+
+Features
+- Switch between five built-in profiles: Bitcoin Monitor Widget, Solana Index, Outruna, Intent AI Ops and founder Eugene Gusev.
+- Customize each profile's keywords, filters, scoring weights and appearance.
+- Open Latest searches, refresh a selected X search/Home page, or load more results.
+- Optionally generate reply drafts through your own Codex App Server.
+- Review and edit drafts, inspect skip reasons, and retry skipped drafts.
+- Open the source post and prepare a reply after checking the visible X account. You review and click Reply yourself.
+
+Important scope
+The product contexts and intended reply accounts are predefined for the named products and founder. This release does not offer arbitrary AI product-context uploads or arbitrary reply-account configuration. Switching a targeting profile does not switch your signed-in X account.
+
+AI is optional and requires setup
+Local scoring does not require Codex. AI drafting requires a separately configured Codex App Server and an account with access to the requested GPT-5.6 Luna model. Third-party access may require payment and is subject to provider usage limits. Xboost does not provide a hosted AI service.
+
+Local agent connection
+WS support is intended for a user-managed Codex agent running on the same computer or on the user's local network, including a Docker-hosted agent. The browser connects directly to the server address you configure; Xboost does not route requests through a developer-operated relay. This local-agent connection does not mean AI processing is offline: Codex sends generation requests to OpenAI.
+
+Plain ws:// does not encrypt traffic, including on a local network. Use localhost, an encrypted SSH tunnel, or wss:// when transport protection is needed. Capability-token authentication controls server access but does not encrypt the connection. Do not expose a plaintext WS listener to the public internet.
+
+Privacy
+Local scoring runs in Firefox. When you enable AI, qualifying post text, author handles, source-post URLs and the matching bundled product context are sent to your configured Codex server and OpenAI. Your server capability token authenticates requests to that server. Search buttons send profile keyword queries to X. Preparing a reply places text into X's composer, where X can process it before submission.
+
+Settings, capability credentials, source posts and drafts are stored locally in Firefox, not synced by Xboost. No analytics or telemetry are included. Use localhost/SSH forwarding or WSS to protect credentials and content; plain WS is unencrypted. See the privacy policy for recipients, retention and controls.
+
+Xboost does not automatically publish posts, send replies, like posts, follow users or switch X accounts. It is disabled in private browsing. AI output can be inaccurate and requires review. X's changing interface may affect account detection and composer assistance.
+
+Independent project. Not affiliated with or endorsed by Mozilla, X or OpenAI.
+
+VERSION NOTES
+Initial AMO submission. Includes product profiles, local scoring, optional Codex drafting, manual composer assistance, discovery controls, privacy disclosures and MIT licensing.

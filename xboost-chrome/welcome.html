@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en" class="theme-loading">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome to Xboost</title>
+    <script src="chrome-compat.js"></script><script src="theme.js"></script>
+    <link rel="stylesheet" href="ui.css">
+    <script defer src="shared.js"></script>
+    <script defer src="welcome.js"></script>
+  </head>
+  <body>
+    <main class="page welcome">
+      <header class="welcome-header">
+        <img src="icons/icon128.png" width="104" height="104" alt="Xboost icon">
+        <h1>Xboost</h1>
+        <p>Find useful conversations on X and prepare replies that you review and send yourself.</p>
+      </header>
+
+      <section class="card welcome-guide" aria-labelledby="how-it-works">
+        <h2 id="how-it-works">How to use Xboost</h2>
+        <ol class="quick-start">
+          <li><strong>Choose or create a profile.</strong> A profile holds one product, its X account, keywords and AI context.</li>
+          <li><strong>Open an X search.</strong> Xboost scores posts as they appear and highlights useful conversations.</li>
+          <li><strong>Prepare a draft.</strong> Select a post for optional Codex drafting, then review and edit the result.</li>
+          <li><strong>Reply yourself.</strong> Check the signed-in X account before you fill and send the reply.</li>
+        </ol>
+        <p class="welcome-note">Xboost does not automatically publish, like, follow or switch your X account.</p>
+      </section>
+
+      <section class="welcome-chooser" aria-labelledby="choose-profile">
+        <h2 id="choose-profile">Choose a profile</h2>
+        <p>Selecting a profile opens a relevant X search. You can switch again from the toolbar at any time.</p>
+        <div class="profiles welcome-profiles" id="profiles"></div>
+        <p class="status centered" id="status" role="status"></p>
+        <div class="welcome-actions">
+          <button type="button" class="button primary" id="create-profile">Create new profile</button>
+          <button type="button" class="button" id="custom">Open profile editor</button>
+        </div>
+      </section>
+
+      <footer>Scoring stays local. Optional AI drafting sends selected posts to your LAN server and OpenAI. Xboost never publishes, likes or follows for you.</footer>
+    </main>
+  </body>
+</html>

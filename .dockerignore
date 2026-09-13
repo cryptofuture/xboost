@@ -1,0 +1,7 @@
+.git
+1.0.2_0
+**/node_modules
+**/web-ext-artifacts
+**/.env
+xboost-server/xboost-token
+**/*.log

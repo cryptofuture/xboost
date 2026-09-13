@@ -1,0 +1,36 @@
+# Xboost
+
+> Xboost is a Chrome and Firefox browser extension that helps people find relevant conversations on X and draft replies with AI. Users review and publish replies manually.
+
+## Overview
+
+- [Landing page](index.html): features, workflow, setup requirements, FAQ, and privacy.
+- [Extension privacy policy](privacy.html): local storage, optional AI data transfers, and user controls for Chrome and Firefox.
+
+## Capabilities
+
+Xboost scores rendered X posts locally using profile targeting and configurable filters. Users can create, copy, edit, delete, and select product profiles with keywords, an X handle, and authoritative product context. Relevant posts can be selected manually or collected while users browse with drafting enabled.
+
+Optional AI drafting connects to a user-configured Codex App Server over an authenticated ws:// or wss:// connection. Post text, author handles, post URLs, and selected product context are sent through that server to OpenAI. Users review and edit drafts, copy them, or request insertion into the X reply composer. Users submit replies themselves.
+
+## Requirements and limits
+
+- Chrome or Firefox and access to X.
+- AI drafting requires a running Codex App Server, its WebSocket URL and capability token, and available Codex capacity.
+- Discovery operates on loaded posts as users open searches and browse X.
+- Draft targets are configurable goals, not guaranteed results or daily quotas.
+- Xboost does not automatically publish, like, follow, or switch X accounts.
+- Selecting an Xboost product profile does not select an X account.
+- Closing the last AI panel pauses drafting; restart requires explicit resume.
+
+## Privacy
+
+Scoring happens locally. Settings, drafts, history, source posts, and connection configuration are stored in browser extension-local storage. Optional AI drafting shares the content described above with the configured server and OpenAI. X receives search queries, navigation, and composer content. Do not describe AI processing as entirely local or claim data never leaves the device. Plain ws:// is unencrypted. The landing page has no analytics or third-party scripts and stores only the theme preference locally; hosting access logs depend on the hosting provider.
+
+## Availability
+
+Both Chrome and Firefox versions exist. Verified store listing URLs and the public website domain have not been configured in this landing-page source. Do not invent download links, pricing, usage counts, reviews, or guarantees.
+
+## Author
+
+- [Eugene Gusev on X](https://x.com/quellemor)

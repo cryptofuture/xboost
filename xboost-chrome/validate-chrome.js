@@ -1,0 +1,10 @@
+'use strict'
+const fs = require('node:fs')
+const assert = require('node:assert/strict')
+const manifest = require('./manifest.json')
+assert.equal(manifest.manifest_version, 3)
+assert.equal(manifest.background.service_worker, 'service-worker.js')
+assert.ok(!manifest.browser_specific_settings)
+assert.ok(!manifest.permissions.includes('webRequestBlocking'))
+for (const file of [manifest.background.service_worker, manifest.action.default_popup, manifest.options_ui.page, ...manifest.content_scripts.flatMap(item => [...item.js, ...item.css]), ...Object.values(manifest.icons)]) assert.ok(fs.existsSync(file), file)
+console.log('Chrome manifest and referenced assets validated (static checks).')

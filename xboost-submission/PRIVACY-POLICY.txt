@@ -1,0 +1,63 @@
+Xboost Privacy Policy
+
+Effective September 13, 2026
+
+This policy describes the Xboost browser extension for Firefox and Chrome.
+
+Overview
+
+Xboost scores rendered X/Twitter posts locally and can optionally create AI-assisted reply drafts. Xboost does not operate a developer-controlled data collection backend and includes no analytics, advertising, or telemetry. The developer does not receive or sell user data.
+
+Data processed locally
+
+Xboost may process the following information to provide its features:
+
+- Website content: rendered post text, author handles, timestamps, metrics, hashtags, and post URLs.
+- Personal communications: generated or edited reply drafts and replies the user manually marks as published.
+- Authentication information: the address and capability token for the Codex App Server configured by the user. Xboost does not read X, ChatGPT, or OpenAI browser cookies or passwords.
+- Browsing activity and search terms: supported X page URLs, selected discovery tabs, and searches created from the user's saved targeting terms.
+- User settings: profiles, product descriptions, authoritative AI context, intended X handles, keywords, filters, themes, discovery state, and preferences.
+
+Preferences and discovery state are stored in browser extension-local storage. Source posts, drafts, profile-context revisions, errors, reply history, and deduplication records are stored in extension-owned IndexedDB. This data is not stored in browser Sync. Temporary reply handoffs remain in background memory for up to 30 minutes.
+
+Upgrades from older versions migrate draft records to IndexedDB in resumable batches. The legacy copy is retained until the migration is validated. Dismissing a draft hides it but does not delete its historical record. Deleting a profile removes its settings while preserving historical drafts and reply records.
+
+Optional AI drafting
+
+AI drafting is disabled until the user enables it. Starting discovery enables drafting. While drafting is enabled, eligible or manually selected post text, author handles, post URLs, the selected profile context, and relevant prior confirmed replies may be sent to the user-configured Codex App Server and processed by OpenAI through that server.
+
+The capability token is sent only to the configured WebSocket endpoint for authentication. Codex manages its own OpenAI account credentials on the server. Xboost does not control the server operator's or OpenAI's retention, training, or deletion practices. Users should enable AI only for content they are authorized to share.
+
+X navigation and assisted replies
+
+Opening searches sends the search terms to X. Opening a source post sends its URL to X. At the user's request, Xboost can insert a selected draft into X's reply composer. X may process composer text before the user submits it. Copy actions place selected text on the system clipboard.
+
+Xboost does not automatically click Reply, Post, Like, or Follow and does not switch X accounts. Users review and publish every reply themselves. Discovery does not automatically scroll X pages or navigate unrelated tabs.
+
+Recipients and sharing
+
+Data is disclosed only as necessary for user-requested functionality:
+
+- X receives searches, opened URLs, and text placed in its composer.
+- The user-configured Codex App Server and OpenAI receive drafting inputs only while AI drafting is enabled.
+- The system clipboard receives text only when the user invokes a copy action.
+
+Xboost does not sell data or disclose it to advertisers or data brokers.
+
+Connection security
+
+Xboost supports ws:// and wss:// connections to the configured Codex server. Plain ws:// is unencrypted and can expose the capability token and drafting messages to network observers. Users should prefer localhost with SSH forwarding or encrypted wss:// for remote connections. The capability token is stored locally without additional extension-level encryption, so users should protect their browser profile and server.
+
+User controls, retention, and deletion
+
+Users can disable AI, pause or stop discovery, or close the last AI panel to stop new drafting and request cancellation. Cancellation cannot be confirmed while the server is disconnected. Restarting the browser or extension does not automatically resume discovery.
+
+Drafts and history remain stored so deduplication, retry, and reply-history features continue to work. Uninstalling Xboost removes its extension-local data from that browser. Server or provider data, backups, and clipboard contents must be managed separately. Revoking the Codex capability token prevents future use of that token. Xboost is disabled in private or incognito browsing.
+
+Children
+
+Xboost is a productivity tool and is not directed to children.
+
+Changes and contact
+
+Material policy changes will be included with extension updates and reflected on the official Xboost website or store listing. Use the support contact published on the official Mozilla Add-ons or Chrome Web Store listing for privacy questions.

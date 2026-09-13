@@ -1,0 +1,19 @@
+{
+  "name": "xboost-firefox-extension",
+  "version": "1.21.1",
+  "private": true,
+  "license": "MIT",
+  "description": "Local, deterministic X post scoring for Firefox.",
+  "scripts": {
+    "check": "npm run lint && npm test",
+    "lint": "standard \"*.js\" \"test/**/*.js\" \"benchmark/**/*.js\"",
+    "test": "node --test test/*.test.js",
+    "benchmark": "node benchmark/run-browser.js 1000 10000 50000",
+    "package": "npx --yes web-ext@10.6.0 build --overwrite-dest --ignore-files package.json package-lock.json README.md PERFORMANCE.md AUTOMATION-DESIGN.md \"test/**\" \"benchmark/**\" themes icons/icon-source.png",
+    "validate": "npx --yes web-ext@10.6.0 lint"
+  },
+  "devDependencies": {
+    "fake-indexeddb": "^6.2.4",
+    "standard": "^17.1.2"
+  }
+}
