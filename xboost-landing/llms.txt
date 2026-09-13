@@ -4,7 +4,7 @@
 
 ## Overview
 
-- [Landing page](index.html): features, workflow, setup requirements, FAQ, and privacy.
+- [Landing page](/): features, workflow, setup requirements, FAQ, and privacy.
 - [Extension privacy policy](privacy.html): local storage, optional AI data transfers, and user controls for Chrome and Firefox.
 
 ## Capabilities
