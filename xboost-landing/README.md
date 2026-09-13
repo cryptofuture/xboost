@@ -4,7 +4,7 @@ Open `index.html` directly or serve this folder with any static web server. All 
 
 Design: editorial minimal concept, Arctic Daylight default and Ocean Signal dark theme. The screenshot dialog uses actual extension screenshots in the configured slide order. AI processing disclosures reflect the extension's Codex/OpenAI workflow.
 
-On phones, navigation remains visible, hero actions and workflow steps use compact two-column grids, and the lower sections stack with larger reading text. The screenshot dialog supports swipe and keyboard navigation, keeps controls below the image on mobile, and locks background scrolling while open. Screenshots load lazily. Reduced-motion preferences are respected. All assets are local; no CDN scripts or styles need integrity attributes.
+On phones, navigation remains visible, hero actions and workflow steps use compact two-column grids, and the lower sections stack with larger reading text. The screenshot dialog supports swipe and keyboard navigation, keeps controls below the image on mobile, and locks background scrolling while open. Screenshots load lazily from the repository through GitHub's raw-content host. Reduced-motion preferences are respected. Other assets are local; no CDN scripts or styles need integrity attributes.
 
 ## Before publishing
 
