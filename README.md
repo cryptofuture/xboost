@@ -23,6 +23,10 @@ Xboost is a Firefox and Chrome extension for finding relevant conversations on X
 | --- | --- |
 | ![Xboost AI discovery and draft queue](screens/chrome-store/03-ai-discovery.png) | ![Xboost assisted reply in the X composer](screens/chrome-store/04-assisted-reply.png) |
 
+## Usage Example
+
+[Watch the Xboost usage example on YouTube](https://www.youtube.com/watch?v=LTtp4le0VgU).
+
 ## Install
 
 - Firefox: install [Xboost from Mozilla Add-ons](https://addons.mozilla.org/en-US/firefox/addon/xboost/).
