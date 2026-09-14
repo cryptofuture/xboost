@@ -29,7 +29,8 @@ Scoring happens locally. Settings, drafts, history, source posts, and connection
 
 ## Availability
 
-Both Chrome and Firefox versions exist. Verified store listing URLs and the public website domain have not been configured in this landing-page source. Do not invent download links, pricing, usage counts, reviews, or guarantees.
+- [Chrome Web Store](https://chromewebstore.google.com/detail/xboost/opipabikjeffboifgmonnkfjdfngpafg)
+- [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/xboost/)
 
 ## Author
 

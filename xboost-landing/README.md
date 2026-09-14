@@ -6,14 +6,11 @@ Design: editorial minimal concept, Arctic Daylight default and Ocean Signal dark
 
 On phones, navigation remains visible, hero actions and workflow steps use compact two-column grids, and the lower sections stack with larger reading text. The screenshot dialog supports swipe and keyboard navigation, keeps controls below the image on mobile, and locks background scrolling while open. Screenshots load lazily from the repository through GitHub's raw-content host. Reduced-motion preferences are respected. Other assets are local; no CDN scripts or styles need integrity attributes.
 
-## Before publishing
+## Publishing
 
-1. Set the verified Chrome listing URL in `storeLinks` near the bottom of `index.html` and replace the video placeholder when its URL is available. Firefox is already linked to Mozilla Add-ons. Unconfigured links show an availability dialog.
-2. Once the public domain is selected, add an absolute canonical link, `og:url`, and absolute social-image URLs to the head. No invented domain is included.
-3. Update the installation availability sentence and `llms.txt` with the verified listing links.
-4. Deploy this folder, keeping `/llms.txt` accessible from the website root. Configure HTTPS through your host.
+Deploy this folder at the website root, keeping `/llms.txt` accessible. The Chrome Web Store, Firefox Add-ons, usage video, canonical URL, and social metadata are configured. Configure HTTPS through the host and confirm it applies the HSTS rule in `_headers`.
 
-Included metadata: title, description, robots, theme color, Open Graph, Twitter summary card, favicon, and SoftwareApplication JSON-LD. A canonical URL and sitemap require the final domain. Store approval and public listing availability are not claimed.
+Included metadata: title, description, robots, theme color, canonical URL, Open Graph, Twitter large-image card, favicon, and SoftwareApplication JSON-LD.
 
 The separate extension privacy policy is `privacy.html`, covering Chrome and Firefox. Use its final absolute URL in browser-store submissions. A short privacy summary is also on the landing page. Review the website section against the actual host's access-log policy before publishing.
 

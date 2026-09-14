@@ -30,7 +30,7 @@ Xboost is a Firefox and Chrome extension for finding relevant conversations on X
 ## Install
 
 - Firefox: install [Xboost from Mozilla Add-ons](https://addons.mozilla.org/en-US/firefox/addon/xboost/).
-- Chrome: open `chrome://extensions`, enable Developer mode, choose **Load unpacked**, and select `xboost-chrome/`.
+- Chrome: install [Xboost from the Chrome Web Store](https://chromewebstore.google.com/detail/xboost/opipabikjeffboifgmonnkfjdfngpafg).
 
 Open X after installation and configure a profile with its X handle, targeting terms, and authoritative product context. Local scoring works without AI. AI drafting requires a running Codex App Server and its WebSocket address and capability token in Xboost Settings.
 
