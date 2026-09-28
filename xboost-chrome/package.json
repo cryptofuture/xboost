@@ -1,6 +1,6 @@
 {
   "name": "xboost-chrome-extension",
-  "version": "1.21.1",
+  "version": "1.25.0",
   "private": true,
   "license": "MIT",
   "description": "Xboost for Chrome with direct Codex App Server drafting.",
@@ -10,7 +10,7 @@
     "test": "node --test test/*.test.js",
     "benchmark": "node benchmark/run-browser.js 1000 10000 50000",
     "parity": "node check-parity.js",
-    "package": "mkdir -p web-ext-artifacts && zip -qr web-ext-artifacts/xboost-chrome-1.21.1.zip . -x 'node_modules/*' 'test/*' 'benchmark/*' 'web-ext-artifacts/*' 'themes/*' '*xboost-token*' 'package*.json' 'README.md' 'PERFORMANCE.md' 'AUTOMATION-DESIGN.md' '.gitignore' 'validate-chrome.js' 'check-parity.js'",
+    "package": "mkdir -p web-ext-artifacts && zip -qr web-ext-artifacts/xboost-chrome-1.25.0.zip . -x 'node_modules/*' 'test/*' 'benchmark/*' 'web-ext-artifacts/*' 'themes/*' '*xboost-token*' 'package*.json' 'README.md' 'PERFORMANCE.md' 'AUTOMATION-DESIGN.md' '.gitignore' 'validate-chrome.js' 'check-parity.js'",
     "validate": "node validate-chrome.js"
   },
   "devDependencies": {

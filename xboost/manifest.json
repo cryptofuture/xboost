@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "incognito": "not_allowed",
   "name": "Xboost",
-  "version": "1.21.1",
+  "version": "1.25.0",
   "description": "Find relevant X conversations with local scoring and optional Codex AI drafts. Review and send replies yourself.",
   "permissions": [
     "storage",

@@ -43,7 +43,7 @@ class XboostCodex {
           try { this.receive(JSON.parse(event.data)) } catch { this.fail(new Error('Invalid Codex response')) }
         }
       })
-      await this.request('initialize', { clientInfo: { name: 'xboost', title: 'Xboost drafting', version: '1.21.1' } })
+      await this.request('initialize', { clientInfo: { name: 'xboost', title: 'Xboost drafting', version: '1.25.0' } })
       this.send({ method: 'initialized', params: {} })
     })()
     return this.ready
@@ -108,13 +108,14 @@ class XboostCodex {
     return this.request(method, params)
   }
 
-  async draft (prompt, signal) {
+  async draft (prompt, signal, model = 'gpt-5.6-luna', modelProvider = 'openai', reasoningEffort = 'low') {
     await this.start()
     if (signal.aborted) throw new Error('Stopped')
     const { thread } = await this.request('thread/start', {
-      model: 'gpt-5.6-luna',
+      model,
+      modelProvider,
       ephemeral: true,
-      config: { 'features.shell_tool': false, 'features.unified_exec': false, 'features.apps': false, web_search: 'disabled' },
+      config: { 'features.shell_tool': false, 'features.unified_exec': false, 'features.apps': false, web_search: 'disabled', model_reasoning_effort: reasoningEffort },
       sandbox: 'read-only',
       approvalPolicy: 'never',
       baseInstructions: 'You write short factual social replies. Output text only. Never use tools or read files.',
@@ -164,7 +165,10 @@ class XboostCodex {
     completion.catch(() => {})
     try {
       if (signal.aborted) { cancel(new Error('Stopped')); return await completion }
-      const result = await this.request('turn/start', { threadId: thread.id, model: 'gpt-5.6-luna', effort: 'low', input: [{ type: 'text', text: prompt.input }] })
+      const result = await this.request('turn/start', {
+        threadId: thread.id,
+        input: [{ type: 'text', text: prompt.input }]
+      })
       turnId = result.turn.id
       if (signal.aborted) cancel(new Error('Stopped'))
       return await completion

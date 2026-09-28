@@ -168,6 +168,7 @@ async function harness (saved, draft) {
   }
   class Client {
     on () {}
+    async start () {}
     async call () { return { account: { type: 'chatgpt' } } }
     async draft (prompt, signal) { calls++; return draft ? draft(prompt, signal) : 'Answer about ' + JSON.parse(prompt.input).sourcePost.text }
   }

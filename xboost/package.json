@@ -1,6 +1,6 @@
 {
   "name": "xboost-firefox-extension",
-  "version": "1.21.1",
+  "version": "1.25.0",
   "private": true,
   "license": "MIT",
   "description": "Local, deterministic X post scoring for Firefox.",

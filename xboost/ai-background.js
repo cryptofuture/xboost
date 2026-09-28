@@ -22,7 +22,7 @@
   browser.tabs.onActivated?.addListener(info => {
     syncProfileForTab(info.tabId).catch(error => { lastError = error.message })
   })
-  let config = { url: '', token: '' }
+  let config = { url: '', token: '', model: 'gpt-5.6-luna', modelProvider: 'openai', reasoningEffort: 'low' }
   let jobs = []
   const jobById = new Map()
   const jobPositions = new Map()
@@ -42,7 +42,7 @@
   let connectionCache
   let connectionStatusPromise
   const initialized = browser.storage.local.get([KEY, SESSION]).then(async data => {
-    config = data[KEY] || config
+    config = { ...config, ...(data[KEY] || {}) }
     session = data[SESSION] || null
     scheduledSmallState = JSON.stringify({ [KEY]: config, [SESSION]: session })
     repository = new JobRepository(browser)
@@ -251,8 +251,7 @@
     if (!(await globalThis.XboostCore.loadSettings()).enabled) throw new Error('Enable Xboost scoring before starting or resuming discovery')
     if (working && !enabled) throw new Error('Wait for the interrupted draft to stop')
     const epoch = runEpoch
-    const { account } = await connection().call('account/read', { refreshToken: false })
-    if (!account) throw new Error('Sign in to Codex in Settings first')
+    await connectionStatus(true)
     if (!panels.size || epoch !== runEpoch) throw new Error('Discovery was paused while connecting')
   }
   async function openNextSearch (active) {
@@ -434,9 +433,8 @@
     if (!force && connectionCache && Date.now() - connectionCache.checkedAt < 30000) return connectionCache
     if (connectionStatusPromise) return connectionStatusPromise
     connectionStatusPromise = (async () => {
-      const { account } = await connection().call('account/read', { refreshToken: false })
-      const limits = account ? await connection().call('account/rateLimits/read').catch(() => null) : null
-      connectionCache = { account, limits, checkedAt: Date.now() }
+      await connection().start()
+      connectionCache = { connected: true, account: null, limits: null, checkedAt: Date.now() }
       return connectionCache
     })().finally(() => { connectionStatusPromise = null })
     return connectionStatusPromise
@@ -478,7 +476,7 @@
             prompt.instructions += '\nOther owned accounts already replied to this post. Do not repeat their pitches or imply independent endorsement. Skip unless this account can add genuinely distinct value.'
             prompt.input += '\n<PREVIOUS_REPLIES>' + JSON.stringify(previous.map(item => ({ account: item.expectedHandle, text: item.sentText || item.text }))) + '</PREVIOUS_REPLIES>'
           }
-          const result = await connection().draft(prompt, signal)
+          const result = await connection().draft(prompt, signal, config.model, config.modelProvider, config.reasoningEffort)
           Object.assign(job, globalThis.XboostReplies.parseDraft(result))
           if (job.sessionId && job.status === 'ready' && jobs.some(item => item.id !== job.id && item.hasText && item.normalizedDraft === discovery.normalize(job.text))) Object.assign(job, { status: 'skipped', text: '', skipReason: 'Duplicate draft wording; find another conversation.' })
           await checkProfiles()
@@ -573,7 +571,7 @@
     if (sender.url !== browser.runtime.getURL('ai.html') && !isSettings) throw new Error('Extension settings or AI panel required')
     if (['save', 'login'].includes(message.action) && !isSettings) throw new Error('Configure Codex in Settings')
     if (isSettings && !['config', 'save', 'login', 'status'].includes(message.action)) throw new Error('AI panel required')
-    if (message.action === 'config') return { url: config.url, enabled, configured: Boolean(config.token && config.url.startsWith('ws')) }
+    if (message.action === 'config') return { url: config.url, model: config.model, modelProvider: config.modelProvider, reasoningEffort: config.reasoningEffort, enabled, configured: Boolean(config.token && config.url.startsWith('ws')) }
     if (message.action === 'save-edit') {
       if (!jobById.has(message.id) || typeof message.text !== 'string' || typeof message.writer !== 'string' || message.writer.length > 100) throw new Error('Invalid local edit')
       return repository.putEdit({ jobId: message.id, text: message.text, writer: message.writer, expectedUpdatedAt: message.expectedUpdatedAt })
@@ -635,7 +633,13 @@
       client?.close()
       client = null
       connectionCache = null
-      config = { url: url.href, token }
+      config = {
+        url: url.href,
+        token,
+        model: String(message.model || previous.model || 'gpt-5.6-luna').trim() || 'gpt-5.6-luna',
+        modelProvider: String(message.modelProvider || previous.modelProvider || 'openai').trim() || 'openai',
+        reasoningEffort: String(message.reasoningEffort || previous.reasoningEffort || 'low').trim() || 'low'
+      }
       try {
         await connectionStatus(true)
         await persist()
@@ -659,8 +663,7 @@
       if (!panels.size) throw new Error('Keep the AI replies panel open while auto-drafting')
       if (working) throw new Error('Wait for the previous draft to stop')
       const epoch = runEpoch
-      const { account } = await connection().call('account/read', { refreshToken: false })
-      if (!account) throw new Error('Sign in to Codex first')
+      await connectionStatus(true)
       if (!panels.size) throw new Error('AI replies panel closed')
       if (epoch !== runEpoch) throw new Error('Enabling AI was cancelled')
       enabled = true
@@ -674,8 +677,8 @@
       const queue = sender.url === browser.runtime.getURL('ai.html') ? await jobView(message) : { jobs: [] }
       if (!config.url || !config.token) return { enabled: false, account: null, limits: null, ...queue, lastError }
       try {
-        const { account, limits } = await connectionStatus(Boolean(message.refresh))
-        return { enabled, account, limits, ...queue, lastError }
+        const { limits } = await connectionStatus(Boolean(message.refresh))
+        return { enabled, connected: true, account: null, limits, ...queue, lastError }
       } catch (error) {
         return { enabled, account: null, limits: null, ...queue, lastError: error.message }
       }

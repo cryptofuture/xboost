@@ -130,8 +130,8 @@ async function refreshConnection () {
   const data = await call('status')
   el('error').textContent = ''
   el('automode').checked = data.enabled
-  el('automode').disabled = !data.account
-  el('server-status').textContent = `${data.account ? `Signed in (${data.account.planType || data.account.type})` : 'Sign-in required'} · ${data.enabled ? 'Auto-drafting on' : 'Paused'}${data.lastError ? ` · ${data.lastError}` : ''}`
+  el('automode').disabled = !data.connected
+  el('server-status').textContent = `${data.connected ? 'Connected' : 'Disconnected'} · ${data.enabled ? 'Auto-drafting on' : 'Paused'}${data.lastError ? ` · ${data.lastError}` : ''}`
   const limit = data.limits?.rateLimits
   el('limits').textContent = limit ? `Codex usage: ${JSON.stringify(limit)}` : 'Codex usage limits are unavailable until sign-in or not reported by this plan.'
 }

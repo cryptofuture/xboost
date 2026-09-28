@@ -49,7 +49,7 @@ test('initializes once, handles RPC and denies server tool requests', async () =
   client.close()
 })
 
-test('draft captures notifications arriving before turn/start response', async () => {
+test('draft passes default and explicit providers through thread/start only', async () => {
   const { client, sent } = fixture((message, notify) => {
     if (message.method === 'thread/start') return { thread: { id: 'thread1' } }
     if (message.method === 'turn/start') {
@@ -62,14 +62,18 @@ test('draft captures notifications arriving before turn/start response', async (
     return {}
   })
   assert.equal(await client.draft({ instructions: 'Facts', input: 'Post' }, new AbortController().signal), 'Useful reply')
-  const params = sent.find(message => message.method === 'thread/start').params
-  assert.equal(params.sandbox, 'read-only')
-  assert.equal(params.model, 'gpt-5.6-luna')
-  const turn = sent.find(message => message.method === 'turn/start').params
-  assert.equal(turn.model, 'gpt-5.6-luna')
-  assert.equal(turn.effort, 'low')
-  assert.equal(params.approvalPolicy, 'never')
-  assert.equal(params.config['features.shell_tool'], false)
+  assert.equal(await client.draft({ instructions: 'Facts', input: 'Post' }, new AbortController().signal, 'mimo-v2.6-pro', 'mimo', 'high'), 'Useful reply')
+  const threads = sent.filter(message => message.method === 'thread/start').map(message => message.params)
+  assert.equal(threads[0].model, 'gpt-5.6-luna')
+  assert.equal(threads[0].modelProvider, 'openai')
+  assert.equal(threads[0].config.model_reasoning_effort, 'low')
+  assert.equal(threads[1].model, 'mimo-v2.6-pro')
+  assert.equal(threads[1].modelProvider, 'mimo')
+  assert.equal(threads[1].config.model_reasoning_effort, 'high')
+  assert.equal(threads[1].sandbox, 'read-only')
+  assert.equal(threads[1].approvalPolicy, 'never')
+  assert.equal(threads[1].config['features.shell_tool'], false)
+  for (const message of sent.filter(message => message.method === 'turn/start')) assert.deepEqual(message.params, { threadId: 'thread1', input: [{ type: 'text', text: 'Post' }] })
   client.close()
 })
 

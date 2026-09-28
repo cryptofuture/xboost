@@ -19,6 +19,9 @@ test('direct background queues, deduplicates, isolates accounts and pauses when 
   let connect
   let disconnect
   let draftSignal
+  let draftModel
+  let draftModelProvider
+  let draftReasoningEffort
   const browser = {
     storage: {
       local: {
@@ -36,9 +39,14 @@ test('direct background queues, deduplicates, isolates accounts and pauses when 
   }
   class Client {
     on () {}
+    close () {}
+    async start () {}
     async call (method) { return method === 'account/read' ? { account: { type: 'chatgpt' } } : {} }
-    async draft (prompt, signal) {
+    async draft (prompt, signal, model, modelProvider, reasoningEffort) {
       draftSignal = signal
+      draftModel = model
+      draftModelProvider = modelProvider
+      draftReasoningEffort = reasoningEffort
       return new Promise((resolve, reject) => signal.addEventListener('abort', () => reject(new Error('Stopped'))))
     }
   }
@@ -59,9 +67,18 @@ test('direct background queues, deduplicates, isolates accounts and pauses when 
     fetch: async () => ({ ok: true, text: async () => 'Authoritative context' })
   })
   const panel = { url: root + 'ai.html', tab: { id: 2 } }
+  const settings = { url: root + 'options.html', tab: { id: 3 } }
   const call = (action, fields = {}, sender = panel) => listener({ type: 'xboost:ai', action, ...fields }, sender)
   assert.equal((await call('status')).data.enabled, false)
   assert.equal((await call('config', {}, { url: 'https://x.com/', tab: { id: 1 } })).ok, false)
+  assert.equal((await call('config', {}, settings)).data.modelProvider, 'openai')
+  assert.equal((await call('config', {}, settings)).data.reasoningEffort, 'low')
+  const saved = await call('save', { url: 'ws://localhost:4500/', token: 'y'.repeat(32), model: 'xiaomi/mimo-v2.6-pro', modelProvider: 'openrouter', reasoningEffort: 'high' }, settings)
+  assert.equal(saved.ok, true, saved.error)
+  assert.equal(data['xboost:ai'].modelProvider, 'openrouter')
+  assert.equal(data['xboost:ai'].reasoningEffort, 'high')
+  assert.equal((await call('config', {}, settings)).data.modelProvider, 'openrouter')
+  assert.equal((await call('config', {}, settings)).data.reasoningEffort, 'high')
   connect({ name: 'xboost:ai-panel', sender: panel, onDisconnect: { addListener (value) { disconnect = value } } })
   assert.equal((await call('control', { enabled: true })).data.enabled, true)
   const sender = { url: 'https://x.com/search', tab: { id: 1 } }
@@ -70,6 +87,9 @@ test('direct background queues, deduplicates, isolates accounts and pauses when 
   assert.equal((await call('candidate', fields, sender)).data.duplicate, true)
   assert.equal((await call('candidate', { ...fields, post: { ...fields.post, id: '124', author: 'index_solana' } }, sender)).data.ignored, true)
   await new Promise(resolve => setImmediate(resolve))
+  assert.equal(draftModel, 'xiaomi/mimo-v2.6-pro')
+  assert.equal(draftModelProvider, 'openrouter')
+  assert.equal(draftReasoningEffort, 'high')
   disconnect()
   assert.equal(draftSignal.aborted, true)
   await new Promise(resolve => setImmediate(resolve))
@@ -79,7 +99,6 @@ test('direct background queues, deduplicates, isolates accounts and pauses when 
   assert.equal(status.jobs[0].status, 'interrupted')
   assert.equal(status.jobs[0].expectedHandle, 'BitcoinWidget')
   assert.equal(data['xboost:ai-jobs'][0].status, 'interrupted')
-  const settings = { url: root + 'options.html', tab: { id: 3 } }
   assert.equal((await call('config', {}, settings)).ok, true)
   assert.equal((await call('control', { enabled: true }, settings)).ok, false)
   assert.equal((await call('save', {}, panel)).ok, false)

@@ -34,6 +34,7 @@ test('profile editor supports direct create mode and activates a welcome-created
 
 test('Codex settings show cross-platform token and app-server commands', () => {
   const html = fs.readFileSync(path.join(root, 'options.html'), 'utf8')
+  const settings = fs.readFileSync(path.join(root, 'codex-settings.js'), 'utf8')
 
   assert.match(html, /openssl rand -hex 32/)
   assert.match(html, /--ws-token-file \.\/xboost-token/)
@@ -42,4 +43,9 @@ test('Codex settings show cross-platform token and app-server commands', () => {
   assert.match(html, /codex app-server --listen ws:\/\/0\.0\.0\.0:4500/)
   assert.match(html, /--ws-auth capability-token/)
   assert.match(html, /--ws-token-file/)
+  assert.match(html, /value="openai"/)
+  assert.match(html, /value="openrouter"/)
+  assert.match(html, /value="mimo"/)
+  assert.match(settings, /config\.modelProvider \|\| 'openai'/)
+  assert.match(settings, /config\.reasoningEffort \|\| 'low'/)
 })

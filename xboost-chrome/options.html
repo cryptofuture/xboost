@@ -176,7 +176,7 @@
 
     <section class="card">
       <h2>Connect Codex App Server</h2>
-      <p>Reply model: GPT-5.6 Luna with low reasoning effort. Model errors pause drafting; Xboost never switches to a more expensive model automatically.</p>
+      <p>Model errors pause drafting; Xboost never switches models automatically.</p>
       <p>Post text and the selected product context are sent to your server and OpenAI when auto-drafting is enabled.</p>
       <div class="setup-guide">
         <h3>Quick setup</h3>
@@ -192,6 +192,9 @@ codex app-server --listen ws://0.0.0.0:4500 --ws-auth capability-token --ws-toke
         <p>Keep that terminal running. Below, use <code>ws://127.0.0.1:4500</code> on the same computer, or <code>ws://YOUR-LAN-IP:4500</code> from another device. Paste the token file's contents into the capability token field.</p>
       </div>
       <div class="field"><label for="server-url">WebSocket address</label><input type="url" id="server-url" placeholder="ws://127.0.0.1:4500 or wss://your-server"></div>
+      <div class="field"><label for="server-model-provider">Model provider</label><input type="text" id="server-model-provider" list="server-model-providers" value="openai"><datalist id="server-model-providers"><option value="openai"><option value="openrouter"><option value="mimo"></datalist></div>
+      <div class="field"><label for="server-model">Model</label><input type="text" id="server-model" value="gpt-5.6-luna" placeholder="gpt-5.6-luna"></div>
+      <div class="field"><label for="server-reasoning-effort">Reasoning effort</label><input type="text" id="server-reasoning-effort" list="server-reasoning-efforts" value="low"><datalist id="server-reasoning-efforts"><option value="low"><option value="medium"><option value="high"><option value="xhigh"></datalist></div>
       <div class="field"><label for="server-token">Capability token</label><input type="password" id="server-token" autocomplete="off" placeholder="Paste contents of xboost-token"></div>
       <p>Plain ws:// exposes your capability token and messages to network observers. Prefer ws://127.0.0.1 with SSH forwarding, or wss:// through a TLS proxy for remote servers. Never paste a token into a public support message.</p>
       <div class="actions"><button class="button" id="connect">Save &amp; connect</button><button class="button" id="login">Sign in with ChatGPT</button></div>

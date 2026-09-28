@@ -16,8 +16,8 @@
     refreshing = true
     try {
       const data = await call('status')
-      el('codex-status').textContent = data.account ? `Connected · Signed in (${data.account.planType || data.account.type})` : 'Connected · Sign in to Codex to enable AI'
-      if (data.account) el('login-code').textContent = ''
+      el('codex-status').textContent = data.connected ? 'Connected to Codex App Server' : 'Disconnected from Codex App Server'
+      if (data.connected) el('login-code').textContent = ''
     } finally { refreshing = false }
   }
   el('connect').addEventListener('click', () => {
@@ -28,7 +28,7 @@
       if (!granted) throw new Error('Server access was not granted')
       el('connect').disabled = true
       try {
-        await call('save', { url: url.href, token: el('server-token').value })
+        await call('save', { url: url.href, token: el('server-token').value, model: el('server-model').value, modelProvider: el('server-model-provider').value, reasoningEffort: el('server-reasoning-effort').value })
         configured = true
         el('server-token').value = ''
         await refresh()
@@ -42,6 +42,9 @@
   })
   call('config').then(config => {
     el('server-url').value = config.url
+    el('server-model').value = config.model || 'gpt-5.6-luna'
+    el('server-model-provider').value = config.modelProvider || 'openai'
+    el('server-reasoning-effort').value = config.reasoningEffort || 'low'
     configured = config.configured
     return refresh()
   }).catch(error)
